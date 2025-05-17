@@ -27,7 +27,6 @@ class Create extends Component
 
         } catch (\Exception $e) {
             Log::error('خطا در ایجاد وظیفه: ' . $e->getMessage());
-
             session()->flash('error', 'در ذخیره‌سازی وظیفه خطایی رخ داد. لطفاً دوباره تلاش کنید.');
         }
     }
