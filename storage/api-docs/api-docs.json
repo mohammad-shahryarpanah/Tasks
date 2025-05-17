@@ -1,0 +1,258 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Task Management API",
+        "description": "مستندات مربوط به API مدیریت وظایف",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Laravel API Server"
+        }
+    ],
+    "paths": {
+        "/api/index/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "دریافت لیست وظایف",
+                "operationId": "27b4b75fd03eb8ea2269becc98835ff7",
+                "responses": {
+                    "200": {
+                        "description": "لیست وظایف با موفقیت دریافت شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "عملیات با موفقیت انجام شد."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "عنوان تست"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "توضیحات تست"
+                                                    },
+                                                    "priority": {
+                                                        "type": "string",
+                                                        "example": "medium"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "pending"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string",
+                                                        "example": "1403/02/01"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2025-05-17T10:30:00Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2025-05-17T10:30:00Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/store/tasks": {
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "ایجاد یک وظیفه جدید",
+                "operationId": "f39db5b25e948f3192214247a686be92",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "priority",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "عنوان تست"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "توضیحات تست"
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high"
+                                        ],
+                                        "example": "medium"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "in_progress",
+                                            "completed"
+                                        ],
+                                        "example": "pending"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "1403/02/01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "وظیفه با موفقیت ایجاد شد"
+                    },
+                    "500": {
+                        "description": "خطا در سرور"
+                    }
+                }
+            }
+        },
+        "/api/update/tasks/{id}": {
+            "put": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "ویرایش یک وظیفه",
+                "operationId": "9385860ba13e9067b79aeb105c8d6882",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه وظیفه",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "priority",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "عنوان ویرایش شده"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "توضیح ویرایش شده"
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high"
+                                        ],
+                                        "example": "high"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "in_progress",
+                                            "completed"
+                                        ],
+                                        "example": "completed"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "1403/02/20"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "وظیفه با موفقیت به‌روزرسانی شد"
+                    },
+                    "500": {
+                        "description": "خطا در سرور"
+                    }
+                }
+            }
+        },
+        "/api/delete/tasks/{id}": {
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "حذف یک وظیفه",
+                "operationId": "975fe784d05807e6eaaec0936ebba72e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه وظیفه",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "وظیفه با موفقیت حذف شد"
+                    },
+                    "500": {
+                        "description": "خطا در سرور"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tasks",
+            "description": "Tasks"
+        }
+    ]
+}

@@ -8,8 +8,22 @@ use Hekmatinasser\Verta\Verta;
 class TaskRepo
 {
 
+    public function getAll()
+    {
+        $tasks = [];
 
-        public function store(array $data)
+        Task::chunk(100, function ($chunk) use (&$tasks) {
+            foreach ($chunk as $task) {
+                $tasks[] = $task;
+            }
+        });
+
+        return collect($tasks);
+    }
+
+
+
+    public function store(array $data)
     {
         $endDate = null;
         if (!empty($data['end_date'])) {
@@ -30,5 +44,36 @@ class TaskRepo
     {
         return Task::query()->where('id',$id)->update(['status'=>$status]);
     }
+
+    public function updateTask($id,array $data){
+
+        $task = Task::find($id);
+
+        if (!$task) {
+            throw new \Exception('وظیفه‌ای با این شناسه پیدا نشد.');
+        }
+
+        $task->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'end_date' => $data['end_date'],
+            'priority' => $data['priority'],
+            'status' => $data['status'],
+        ]);
+
+        return $task;
+    }
+
+    public function destroyTask($id)
+    {
+        $task = Task::find($id);
+
+        if (!$task) {
+            throw new \Exception('وظیفه‌ای با این شناسه پیدا نشد.');
+        }
+
+        return $task->delete();
+    }
+
 
 }
