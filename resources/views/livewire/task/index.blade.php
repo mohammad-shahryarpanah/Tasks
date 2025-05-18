@@ -9,30 +9,6 @@
 
 {{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">--}}
 
-
-
-    {{--    <div class="container mt-3" dir="rtl">--}}
-{{--        <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded shadow-sm bg-light">--}}
-{{--            <div class="d-flex align-items-center">--}}
-{{--                <img src="{{ Auth::user()->profile_photo_url ?? 'https://via.placeholder.com/40' }}"--}}
-{{--                     alt="Profile"--}}
-{{--                     class="rounded-circle me-2"--}}
-{{--                     style="width: 40px; height: 40px; object-fit: cover;">--}}
-{{--                <span class="fw-bold">{{ Auth::user()->name ?? 'کاربر مهمان' }}</span>--}}
-{{--            </div>--}}
-{{--            <div>--}}
-{{--                <a href="#" class="position-relative text-dark">--}}
-{{--                    <i class="bi bi-bell fs-4"></i>--}}
-{{--                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">--}}
-{{--                    3--}}
-{{--                    <span class="visually-hidden">اعلان جدید</span>--}}
-{{--                </span>--}}
-{{--                </a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
-
     <div class="container mt-3" dir="rtl">
         <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded shadow-sm bg-light">
 
@@ -43,7 +19,6 @@
                 <ul class="dropdown-menu text-end" aria-labelledby="userMenu">
                     @auth
                         <li>
-
                                 <button wire:click.prevent="logout" class="dropdown-item text-danger">خروج</button>
                         </li>
                     @endauth
@@ -56,7 +31,17 @@
                     <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
                 </span>
                 </button>
+
                 <ul class="dropdown-menu dropdown-menu-end text-end p-2" aria-labelledby="notifMenu" style="min-width: 250px;">
+                    @forelse ($notifications as $notification)
+                        <li class="mb-2">
+                            <div class="fw-bold">{{ $notification['title'] ?? 'بدون عنوان' }}</div>
+                            <div>{{ $notification['message'] ?? '' }}</div>
+                        </li>
+                        <hr class="my-1">
+                    @empty
+                        <li class="text-muted text-center">نوتیفیکیشنی وجود ندارد.</li>
+                    @endforelse
                 </ul>
             </div>
 

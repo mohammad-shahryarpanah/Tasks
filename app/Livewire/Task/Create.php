@@ -3,6 +3,7 @@
 namespace App\Livewire\Task;
 
 use App\Models\Task;
+use App\Notifications\HighPriorityTaskNotification;
 use App\Repositories\TaskRepo;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -22,8 +23,25 @@ class Create extends Component
         ]);
 
         try {
+
+            if ($validatedData['priority'] === 'high') {
+                $users = \App\Models\User::all();
+                foreach ($users as $user) {
+                    try {
+                        $user->notify(new HighPriorityTaskNotification($validatedData));
+                    } catch (\Exception $notifyError) {
+                        Log::error('ارسال نوتیفیکیشن با خطا مواجه شد', [
+                            'message' => $notifyError->getMessage(),
+                            'trace' => $notifyError->getTraceAsString(),
+                        ]);
+                        session()->flash('error', 'خطا در ارسال نوتیفیکشن.');
+                    }
+                }
+            }
+
+
             $taskRepo->store($validatedData);
-            session()->flash('success', 'وظیفه با موفقیت ایجاد شد.');
+            session()->flash('success', 'وظیفه با موفقیت ایجاد شد و نوتیفیکیشن برای همه کاربران ارسال شد.');
 
         } catch (\Exception $e) {
             Log::error('خطا در ایجاد وظیفه: ' . $e->getMessage());
