@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Task;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepo
 {
@@ -26,9 +27,16 @@ class TaskRepo
     public function store(array $data)
     {
         $endDate = null;
+
         if (!empty($data['end_date'])) {
-            $v = new Verta($data['end_date']);
-            $endDate = $v->format('Y/m/d');
+            $dateInput = $data['end_date'];
+            $year = explode('/', $dateInput)[0] ?? null;
+            if (is_numeric($year) && (int)$year > 1500) {
+                $v = new Verta($dateInput);
+                $endDate = $v->format('Y/m/d');
+            } else {
+                $endDate = $dateInput;
+            }
         }
 
         return Task::create([
@@ -37,6 +45,7 @@ class TaskRepo
             'end_date' => $endDate,
             'priority' => $data['priority'],
             'status' => $data['status'],
+            'user_id'=>Auth::id()
         ]);
     }
 
@@ -52,7 +61,6 @@ class TaskRepo
         if (!$task) {
             throw new \Exception('وظیفه‌ای با این شناسه پیدا نشد.');
         }
-
         $task->update([
             'title' => $data['title'],
             'description' => $data['description'],

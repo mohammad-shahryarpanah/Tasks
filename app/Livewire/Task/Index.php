@@ -4,6 +4,7 @@ namespace App\Livewire\Task;
 
 use App\Models\Task;
 use App\Repositories\TaskRepo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -15,7 +16,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->tasks = Task::latest()->get();
+        $this->tasks = Task::query()->where('user_id',Auth::id())->latest()->get();
     }
 
     public function updateStatus($taskId, $newStatus,TaskRepo $taskRepo)
@@ -32,20 +33,16 @@ class Index extends Component
 
     }
 
-    public function getFormattedEndDateProperty()
+    public function logout()
     {
-        return $this->tasks->map(function ($task) {
-            if (!$task->end_date) {
-                return 'تاریخ نامشخص';
-            }
+        Auth::logout();
 
-            try {
-                return \Hekmatinasser\Verta\Verta::instance(\Carbon\Carbon::parse($task->end_date))->format('Y/m/d');
-            } catch (\Exception $e) {
-                return 'تاریخ نامعتبر';
-            }
-        });
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('login');
     }
+
 
 
     public function render()
@@ -54,9 +51,4 @@ class Index extends Component
     }
 
 
-
-//    public function render()
-//    {
-//        return view('livewire.task.index');
-//    }
 }

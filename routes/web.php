@@ -12,3 +12,8 @@ Route::get('/', function () {
 Route::get('/tasks/create', Create::class)->name('tasks.create');
 Route::get('/tasks/index', Index::class)->name('tasks.index');
 
+Route::get('/login', \App\Livewire\Task\Login::class)->name('login');
+
+Route::post('/logout', \App\Livewire\Task\Login::class)->name('logout');
+
+
