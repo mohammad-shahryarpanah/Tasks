@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Notifications\HighPriorityTaskNotification;
 use App\Repositories\TaskRepo;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
 class Create extends Component
@@ -23,9 +24,8 @@ class Create extends Component
         ]);
 
         try {
-
+            $users = \App\Models\User::all();
             if ($validatedData['priority'] === 'high') {
-                $users = \App\Models\User::all();
                 foreach ($users as $user) {
                     try {
                         $user->notify(new HighPriorityTaskNotification($validatedData));
@@ -38,6 +38,7 @@ class Create extends Component
                     }
                 }
             }
+
 
 
             $taskRepo->store($validatedData);

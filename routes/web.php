@@ -17,3 +17,14 @@ Route::get('/login', \App\Livewire\Task\Login::class)->name('login');
 Route::post('/logout', \App\Livewire\Task\Login::class)->name('logout');
 
 
+Route::get('/test-notification', function() {
+    $user = \App\Models\User::find(auth()->id());
+    $task = ['title' => 'تست'];
+
+    $user->notify(new \App\Notifications\TaskBroadcastLaravelEcho($task, $user));
+
+    return 'Notification sent!';
+});
+
+
+
