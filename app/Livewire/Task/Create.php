@@ -25,24 +25,30 @@ class Create extends Component
 
         try {
             $users = \App\Models\User::all();
+            $hasNotificationError = false;
+
             if ($validatedData['priority'] === 'high') {
                 foreach ($users as $user) {
                     try {
                         $user->notify(new HighPriorityTaskNotification($validatedData));
                     } catch (\Exception $notifyError) {
                         Log::error('ارسال نوتیفیکیشن با خطا مواجه شد', [
+                            'user_id' => $user->id,
                             'message' => $notifyError->getMessage(),
                             'trace' => $notifyError->getTraceAsString(),
                         ]);
-                        session()->flash('notify', ' نوتیفیکیشن برای همه کاربران ارسال شد.');
-                        session()->flash('error', 'خطا در ارسال نوتیفیکشن.');
+                        $hasNotificationError = true;
                     }
                 }
+
+                if (!$hasNotificationError) {
+                    session()->flash('notify', 'نوتیفیکیشن برای همه کاربران ارسال شد.');
+                } else {
+                    session()->flash('error', 'خطا در ارسال نوتیفیکشن.');
+                }
+
             }
-
-            $taskRepo->store($validatedData);
-            session()->flash('success', 'وظیفه با موفقیت ایجاد شد .');
-
+            session()->flash('success', 'وظیفه با موفقیت ایجاد شد.');
         } catch (\Exception $e) {
             Log::error('خطا در ایجاد وظیفه: ' . $e->getMessage());
             session()->flash('error', 'در ذخیره‌سازی وظیفه خطایی رخ داد. لطفاً دوباره تلاش کنید.');

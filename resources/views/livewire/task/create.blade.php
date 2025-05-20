@@ -76,29 +76,31 @@
 {{--                        </div>--}}
 {{--                    @endif--}}
 
-                    @if (session()->has('success'))
-                        <div class="alert alert-success alert-dismissible fade show mt-4 text-end" role="alert">
-                            <i class="bi bi-check2-circle me-2 fs-5"></i>
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+{{--                    @if (session()->has('error'))--}}
+{{--                        <div class="alert alert-danger alert-dismissible fade show mt-4 text-end" role="alert">--}}
+{{--                            <i class="bi bi-exclamation-triangle me-2 fs-5"></i>--}}
+{{--                            {{ session('error') }}--}}
+{{--                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
 
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger alert-dismissible fade show mt-4 text-end" role="alert">
-                            <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+{{--                    @if (session()->has('notify'))--}}
+{{--                        <div class="alert alert-success alert-dismissible fade show mt-4 text-end" role="alert">--}}
+{{--                            <i class="bi bi-check2-circle me-2 fs-5"></i>--}}
+{{--                            {{ session('notify') }}--}}
+{{--                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
 
-                    @if (session()->has('notify'))
-                        <div class="alert alert-success alert-dismissible fade show mt-4 text-end" role="alert">
-                            <i class="bi bi-check2-circle me-2 fs-5"></i>
-                            {{ session('notify') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+                    @foreach (['success', 'error', 'notify'] as $msg)
+                        @if (session()->has($msg))
+                            <div class="alert alert-{{ $msg === 'error' ? 'danger' : 'success' }} alert-dismissible fade show mt-4 text-end" role="alert">
+                                <i class="bi {{ $msg === 'error' ? 'bi-exclamation-triangle' : 'bi-check2-circle' }} me-2 fs-5"></i>
+                                {{ session($msg) }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+                    @endforeach
 
 
                 </form>
