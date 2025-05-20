@@ -32,17 +32,6 @@
                 </span>
                 </button>
 
-{{--                <ul class="dropdown-menu dropdown-menu-end text-end p-2" aria-labelledby="notifMenu" style="min-width: 250px;">--}}
-{{--                    @forelse ($notifications as $notification)--}}
-{{--                        <li class="mb-2">--}}
-{{--                            <div class="fw-bold">{{ $notification['title'] ?? 'بدون عنوان' }}</div>--}}
-{{--                            <div>{{ $notification['message'] ?? '' }}</div>--}}
-{{--                        </li>--}}
-{{--                        <hr class="my-1">--}}
-{{--                    @empty--}}
-{{--                        <li class="text-muted text-center">نوتیفیکیشنی وجود ندارد.</li>--}}
-{{--                    @endforelse--}}
-{{--                </ul>--}}
 
                 <ul id="notificationList" class="dropdown-menu dropdown-menu-end text-end p-2" aria-labelledby="notifMenu" style="min-width: 250px;">
                     @forelse ($notifications as $notification)

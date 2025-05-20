@@ -34,15 +34,14 @@ class Create extends Component
                             'message' => $notifyError->getMessage(),
                             'trace' => $notifyError->getTraceAsString(),
                         ]);
+                        session()->flash('notify', ' نوتیفیکیشن برای همه کاربران ارسال شد.');
                         session()->flash('error', 'خطا در ارسال نوتیفیکشن.');
                     }
                 }
             }
 
-
-
             $taskRepo->store($validatedData);
-            session()->flash('success', 'وظیفه با موفقیت ایجاد شد و نوتیفیکیشن برای همه کاربران ارسال شد.');
+            session()->flash('success', 'وظیفه با موفقیت ایجاد شد .');
 
         } catch (\Exception $e) {
             Log::error('خطا در ایجاد وظیفه: ' . $e->getMessage());
