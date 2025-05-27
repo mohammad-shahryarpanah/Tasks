@@ -9,6 +9,10 @@
 
 {{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">--}}
 
+
+    <script src="//{{Request::getHost()}}:6001/socket.io/socket.io.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+
     <div class="container mt-3" dir="rtl">
         <div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded shadow-sm bg-light">
 
@@ -33,17 +37,18 @@
                 </button>
 
 
+            
                 <ul id="notificationList" class="dropdown-menu dropdown-menu-end text-end p-2" aria-labelledby="notifMenu" style="min-width: 250px;">
-                    @forelse ($notifications as $notification)
-                        <li class="mb-2">
-                            <div class="fw-bold">{{ $notification['title'] ?? 'بدون عنوان' }}</div>
-                            <div>{{ $notification['message'] ?? '' }}</div>
-                        </li>
-                        <hr class="my-1">
-                    @empty
-                        <li class="text-muted text-center empty-message">نوتیفیکیشنی وجود ندارد.</li>
-                    @endforelse
-                </ul>
+    @foreach ($notifications as $notification)
+        <li class="mb-2">
+            <div class="fw-bold">{{ $notification['title'] ?? 'بدون عنوان' }}</div>
+            <div>{{ $notification['message'] ?? '' }}</div>
+            <div class="realtime"></div>
+        </li>
+        <hr class="my-1">
+    @endforeach
+</ul>
+
 
 
 

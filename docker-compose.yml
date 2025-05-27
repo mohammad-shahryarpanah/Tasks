@@ -1,56 +1,57 @@
 version: '3.8'
 
 services:
-    app:
-        build:
-            context: .
-            dockerfile: docker/apache/Dockerfile
-        container_name: laravel_app
-        ports:
-            - "8080:80"
-        volumes:
-            - ./:/var/www/html
-        depends_on:
-            - mysql
-            - redis
-        command: >
-            sh -c "
-              composer install &&
-              php artisan key:generate &&
-              php artisan migrate --force &&
-              php artisan db:seed --class=UserSeeder --force &&
-              apache2-foreground
-            "
-    mysql:
-        image: mysql:8
-        container_name: laravel_mysql
-        restart: unless-stopped
-        environment:
-            MYSQL_ROOT_PASSWORD: mohammad
-            MYSQL_DATABASE: task_management
-        ports:
-            - "3307:3306"
-        volumes:
-            - mysql_data:/var/lib/mysql
+  app:
+    build:
+      context: .
+      dockerfile: docker/apache/Dockerfile
+    container_name: laravel_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+      - redis
+    command: >
+      sh -c "
+        composer install &&
+        php artisan key:generate &&
+        php artisan migrate --force &&
+        php artisan db:seed --class=UserSeeder --force &&
+        apache2-foreground
+      "
 
-    redis:
-        image: redis:alpine
-        container_name: laravel_redis
-        ports:
-            - "6380:6379"
+  mysql:
+    image: mysql:8
+    container_name: laravel_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: mohammad
+      MYSQL_DATABASE: task_management
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: laravel_phpmyadmin
-        restart: unless-stopped
-        ports:
-            - "8081:80"
-        environment:
-            PMA_HOST: mysql
-            PMA_PORT: 3306
-            MYSQL_ROOT_PASSWORD: mohammad
-        depends_on:
-            - mysql
+  redis:
+    image: redis:alpine
+    container_name: laravel_redis
+    ports:
+      - "6380:6379"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: mohammad
+    depends_on:
+      - mysql
 
 volumes:
-    mysql_data:
+  mysql_data:
